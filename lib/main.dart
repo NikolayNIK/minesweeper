@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minesweeper/board.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,6 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      body: const Board(
+        width: 16,
+        height: 16,
+        mineCount: 40,
       ),
     );
   }
