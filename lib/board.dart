@@ -104,26 +104,31 @@ class _BoardState extends State<Board> {
       _init();
     }
 
-    return Row(children: [
-      for (var x = 0; x < _width; x++)
-        Column(
-          children: [
-            for (var y = 0; y < _height; y++) _buildCell(x, y),
-          ],
-        )
-    ]);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cellWidth = constraints.maxWidth / _width;
+        final cellHeight = constraints.maxHeight / _height;
+        return Row(children: [
+          for (var x = 0; x < _width; x++)
+            Column(
+              children: [
+                for (var y = 0; y < _height; y++) _buildCell(x, y, cellWidth, cellHeight),
+              ],
+            )
+        ]);
+      }
+    );
   }
 
-  Widget _buildCell(int x, int y) {
-    return Material(
+  Widget _buildCell(int x, int y, double cellWidth, double cellHeight) => Material(
       color: _uncoveredMap[x][y]
           ? Theme.of(context).colorScheme.primary.withOpacity(_counterMap[x][y].toDouble() / 16)
           : Theme.of(context).colorScheme.secondary,
       child: InkWell(
         onTap: () => setState(() => _uncover(x, y)),
         child: SizedBox(
-          width: 48,
-          height: 48,
+          width: cellWidth,
+          height: cellHeight,
           child: Center(
               child: Text(
             _uncoveredMap[x][y]
@@ -136,5 +141,4 @@ class _BoardState extends State<Board> {
         ),
       ),
     );
-  }
 }
